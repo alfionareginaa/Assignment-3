@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <link rel="stylesheet" href="css/stylesheet.css">
+        <link href='https://fonts.googleapis.com/css?family=Bowlby One' rel='stylesheet'/>
+        <link href='https://fonts.googleapis.com/css?family=Abyssinica SIL' rel='stylesheet'>
+        <title>Covid-19 Tracker</title>
+    </head>
+
+    <body>
+        <div class="container">
+            <h3>COVID-19 TRACKER</h3>
+            <input type="text" class="inputElement" />
+            <button class="btn">Get Data</button>
+            <br>
+            <br>
+            <div id="container">
+                <div class="activeCases">
+                    <img src="Icon/disease.png">
+                    <br>
+                    Active Cases
+                    <p class="activeCasesInput"></p>
+                </div>
+
+                <div class="newCases">
+                    <img src="Icon/plus.png">
+                    <br>
+                    New Cases
+                    <p class="newCasesInput"></p>
+                </div>
+
+                <div class="recoveredCases">
+                    <img src="Icon/tick.png">
+                    <br>
+                    Recovered Cases
+                    <p class="recoveredCasesInput"></p>
+                </div>
+            </div>
+            <br>
+            <div id="container">
+                <div class="totalCases">
+                    <img src="Icon/all.png">
+                    <br>
+                    Total Cases
+                    <p class="totalCasesInput"></p>
+                </div>
+
+                <div class="totalDeaths">
+                    <img src="Icon/grave.png">
+                    <br>
+                    Total Deaths
+                    <p class="totalDeathsInput"></p>
+                </div>
+
+                <div class="totalTests">
+                    <img src="Icon/testing.png">
+                    <br>
+                    Total Tests
+                    <p class="totalTestsInput"></p>
+                </div>
+            </div>
+        </div>
+    </body>
+
+    <script>
+        const btn = document.querySelector(".btn");
+        const inputElement = document.querySelector(".inputElement");
+
+        btn.addEventListener("click" , getData);
+
+        function getData() {
+            let country = inputElement.value;
+            const options = {
+	            method: 'GET',
+	            headers: {
+		        'X-RapidAPI-Key': '1f79ef9acdmsh642dc02cf6848e2p18e399jsnce6dcd4aac04',
+		        'X-RapidAPI-Host': 'covid-193.p.rapidapi.com'
+	            } 
+            }; 
+            fetch(`https://covid-193.p.rapidapi.com/statistics?country=${country}` , options)
+            .then((response) => response.json())
+            .then((json) => {
+                let data = json.response[0];
+                document.querySelector(".activeCasesInput").innerHTML = data.cases.active;
+                document.querySelector(".newCasesInput").innerHTML = data.cases.new;
+                document.querySelector(".recoveredCasesInput").innerHTML = data.cases.recovered;
+                document.querySelector(".totalCasesInput").innerHTML = data.cases.total;
+                document.querySelector(".totalDeathsInput").innerHTML = data.deaths.total;
+                document.querySelector(".totalTestsInput").innerHTML = data.tests.total;
+            });
+        }
+    </script>
+</html>
